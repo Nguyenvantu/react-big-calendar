@@ -95,7 +95,10 @@ export default function withDragAndDrop(Calendar) {
       interactionInfo.event = event
       const { onEventDrop, onEventResize } = this.props
       if (action === 'move' && onEventDrop) onEventDrop(interactionInfo)
-      if (action === 'resize' && onEventResize) onEventResize(interactionInfo)
+      if (action === 'resize' && onEventResize) {
+        // if (direction === 'RIGHT' && interactionInfo.end) interactionInfo.end.setDate(interactionInfo.end.getDate() - 1) //custom here
+        onEventResize(interactionInfo)
+      }
     }
 
     render() {

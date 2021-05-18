@@ -25,7 +25,7 @@ class EventRow extends React.Component {
 
           row.push(EventRowMixin.renderSpan(slots, span, key, content))
 
-          lastEnd = right + 1
+          lastEnd = right
 
           return row
         }, [])}

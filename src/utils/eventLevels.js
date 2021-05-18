@@ -9,24 +9,50 @@ export function endOfRange(dateRange, unit = 'day') {
 }
 
 export function eventSegments(event, range, accessors) {
+  // let { first, last } = endOfRange(range)
+
+  // let slots = dates.diff(first, last, 'day')
+  // let start = dates.max(dates.startOf(accessors.start(event), 'day'), first)
+  // let end = dates.min(dates.ceil(accessors.end(event), 'day'), last)
+
+  // let padding = findIndex(range, x => dates.eq(x, start, 'day'))
+  // let span = dates.diff(start, end, 'day')
+
+  // span = Math.min(span, slots)
+  // span = Math.max(span, 1)
+
+  // const seg = {
+  //   event,
+  //   span,
+  //   left: padding + 1,
+  //   right: Math.max(padding + span, 1),
+  // }
+  // console.log(seg)
+  // return seg
+
+  // custom here
   let { first, last } = endOfRange(range)
 
   let slots = dates.diff(first, last, 'day')
-  let start = dates.max(dates.startOf(accessors.start(event), 'day'), first)
-  let end = dates.min(dates.ceil(accessors.end(event), 'day'), last)
+  let start = dates.max(dates.startOf(accessors.start(event), 'minutes'), first)
+  let end = dates.min(dates.ceil(accessors.end(event), 'minutes'), last)
 
   let padding = findIndex(range, x => dates.eq(x, start, 'day'))
-  let span = dates.diff(start, end, 'day')
+
+  const oneMinuteSpan = 1 / (24 * 60)
+  let span = dates.diff(start, end, 'minutes') * oneMinuteSpan
+  let spanLeft = (start.getHours() * 60 + start.getMinutes()) * oneMinuteSpan
 
   span = Math.min(span, slots)
-  span = Math.max(span, 1)
-
-  return {
+  span = Math.max(span, 0.1)
+  const rs = {
     event,
     span,
-    left: padding + 1,
-    right: Math.max(padding + span, 1),
+    left: padding + 1 + spanLeft,
+    right: padding + 1 + spanLeft + span,
   }
+
+  return rs
 }
 
 export function eventLevels(rowSegments, limit = Infinity) {
