@@ -47,7 +47,7 @@ class BackgroundCells extends React.Component {
       <div className="rbc-row-bg">
         {range.map((date, index) => {
           let selected = selecting && index >= startIdx && index <= endIdx
-          const { className, style } = getters.dayProp(date)
+          const { className, style, children } = getters.dayProp(date)
 
           return (
             <Wrapper key={index} value={date} range={range}>
@@ -62,6 +62,7 @@ class BackgroundCells extends React.Component {
                     dates.month(currentDate) !== dates.month(date) &&
                     'rbc-off-range-bg'
                 )}
+                children={children}
               />
             </Wrapper>
           )
